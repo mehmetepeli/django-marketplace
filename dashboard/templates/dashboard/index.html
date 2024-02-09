@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+    {% block title %} Dashboard {% endblock %}
+    {% block content %}
+        <div class="px-6 py-12 rounded-xl">
+            <h2 class="mb-12 text-2xl text-center">
+                <span class="relative inline-block px-2 before:absolute before:-inset-1 before:block before:-skew-y-3 before:bg-green-500">
+                  <span class="relative text-white">My Products</span>
+                </span>
+            </h2>
+            <div class="grid grid-cols-5 gap-5">
+                {% for item in items %}
+                    <div class="shadow-xl ring-1 ring-gray-900/5 rounded-lg p-1 bg-white">
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div class="w-full h-[300px] overflow-hidden flex justify-center">
+                                <img src="{{item.image.url}}" class="
+                                    w-auto
+                                    h-[300px]
+                                    rounded-t-lg
+                                    object-contain
+                                    duration-300
+                                    hover:scale-105
+                                    hover:transition-all
+                                    hover:duration-300
+                                    hover:ease-in
+                                    "
+                                alt="">
+                            </div>
+
+                            <div class="p-3">
+                                <h2 class="flex-auto font-medium text-slate-900">{{item.name}}</h2>
+                                <p class="flex-auto font-bold text-slate-900">€ {{item.price|stringformat:".2f"}}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+            <h2 class="mb-12 text-2xl text-center">
+                <span class="
+                    relative
+                    inline-block
+                    px-2
+                    before:absolute
+                    before:-inset-1
+                    before:block
+                    before:-skew-y-3
+                    before:bg-red-500
+                ">
+                  <span class="relative text-white">Your's Product</span>
+                </span>
+                <span class="
+                    relative
+                    inline-block
+                    px-2
+                    before:absolute
+                    before:-inset-1
+                    before:block
+                    before:-skew-y-3
+                    before:bg-orange-500
+                ">
+                  <span class="relative text-white">Categories</span>
+                </span>
+            </h2>
+            <div class="grid grid-cols-6 gap-6">
+                {% for category in categories %}
+                    <div>
+                        <a href="{% url 'item:items' %}?category={{category.id}}">
+                            <div class="
+                                p-6 bg-white
+                                rounded-xl
+                                ring-1
+                                ring-gray-700/5
+                                shadow-md
+                                ease-in
+                                hover:ring-2
+                                hover:ring-sky-700
+                                hover:transition-all
+                                hover:ease-in
+                                hover:shadow-lg
+                            ">
+                                <h2 class="font-bold">{{category.name}}</h2>
+                                <p class="font-normal text-gray-500">
+                                    {{category.items.count}} item{% if category.items.count > 1 %}s{% endif %}<span></span>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endblock %}

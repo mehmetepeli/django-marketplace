@@ -1,0 +1,156 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{item.name}}{% endblock %}
+
+{% block content %}
+    <div class="relative bg-white px-6 pb-8 pt-10 shadow-xl ring-1 ring-gray-900/5 w-full rounded grid grid-cols-5">
+        <div class="relative flex-none overflow-hidden col-span-3">
+            <img src="{{item.image.url}}" alt="Item Image" class="rounded-xl w-5/6 max-h-[600px] object-contain"/>
+        </div>
+
+        <div class="col-span-2 p-6">
+            <h1 class="mb-6 text-3xl font-medium">{{item.name}}</h1>
+            <p class="text-gray-500"><strong>Price: </strong>€ {{item.price|stringformat:".2f"}}</p>
+            <p class="text-gray-500"><strong>Seller: </strong>{{item.created_by}}</p>
+
+            {% if item.description %}
+            <p class="text-gray-700">
+                <strong class="text-gray-500">Description:</strong><br/>
+                {{item.description}}
+            </p>
+            {% endif %}
+
+            {% if request.user == item.created_by %}
+            <div class="w-full mt-6 flex flex-col ring-t-1">
+                <p class="font-bold">This is your item!</p>
+                <div class="flex flex-row mt-3">
+                    <a href="{% url 'item:edit' item.id %}" class="
+                        flex
+                        h-auto
+                        flex-row
+                        rounded-full
+                        border
+                        border-green-500
+                        px-6
+                        py-2
+                        font-medium
+                        text-green-500
+                        duration-300
+                        ease-in
+                        hover:text-green-700
+                        hover:border-green-700
+                    ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-3">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
+                        Edit
+                    </a>
+                    <a href="{% url 'item:delete' item.id %}" class="
+                        flex
+                        h-auto
+                        flex-row
+                        rounded-full
+                        border
+                        border-red-500
+                        ml-3
+                        px-6
+                        py-2
+                        font-medium
+                        text-red-500
+                        duration-300
+                        ease-in
+                        hover:text-red-700
+                        hover:border-red-700
+                    ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-3">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                        Delete
+                    </a>
+                </div>
+
+            </div>
+            {% else %}
+                <a href="{% url 'conversation:new' item.id %}" class="
+                    w-1/4
+                    flex
+                    h-auto
+                    flex-row
+                    rounded-full
+                    border
+                    border-green-500
+                    mt-6
+                    px-3
+                    py-2
+                    font-medium
+                    text-green-500
+                    duration-300
+                    ease-in
+                    hover:text-green-700
+                    hover:border-green-700
+                ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-3">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                    </svg>
+                    Contact Seller
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+                <h2 class="mb-12 text-2xl text-center">
+                    <span class="
+                    relative
+                    inline-block
+                    px-2
+                    before:absolute
+                    before:-inset-1
+                    before:block
+                    before:-skew-y-3
+                    before:bg-red-500
+                ">
+                  <span class="relative text-white">Related</span>
+                </span>
+                    <span class="
+                    relative
+                    inline-block
+                    px-2
+                    before:absolute
+                    before:-inset-1
+                    before:block
+                    before:-skew-y-3
+                    before:bg-orange-500
+                ">
+                  <span class="relative text-white">Products</span>
+                </span>
+                </h2>
+                <div class="grid grid-cols-5 gap-5">
+                    {% for item in related_items %}
+                        <div class="shadow-xl ring-1 ring-gray-900/5 rounded-lg p-1 bg-white">
+                        <a href="{% url 'item:detail' item.id %}">
+                            <div class="w-full h-[300px] overflow-hidden flex justify-center">
+                                <img src="{{item.image.url}}" class="
+                                    w-auto
+                                    h-[300px]
+                                    rounded-t-lg
+                                    object-contain
+                                    duration-300
+                                    hover:scale-105
+                                    hover:transition-all
+                                    hover:duration-300
+                                    hover:ease-in
+                                    "
+                                alt="">
+                            </div>
+
+                            <div class="p-3">
+                                <h2 class="flex-auto font-medium text-slate-900">{{item.name}}</h2>
+                                <p class="flex-auto font-bold text-slate-900">€ {{item.price|stringformat:".2f"}}</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock %}
